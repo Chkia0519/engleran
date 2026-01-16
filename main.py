@@ -1,11 +1,13 @@
 from flask import Flask, request, jsonify ,render_template
-import db
+#import db
 
 app = Flask(__name__)
 
-@app.route('/',methods=["GET"])
+#輸入單字卡
+@app.route('/mylearnwords',methods=["GET"])
 def index():
-    return render_template('mywords.html')
+    return render_template('mylearnwords.html')
+
 
 @app.route('/mywords',methods=['GET','POST'])
 def learnWord():

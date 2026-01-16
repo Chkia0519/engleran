@@ -1,0 +1,31 @@
+<html>
+<h1>HELLO 歡迎來到單字本</h1>
+<h3>輸入正在學習的單字，讓我們來多加練習吧！</h3>
+<form action="/mywords" method="POST" enctype="multipart/form-data">
+    <div>
+        <input type="text" name="lenW" id="lenW" class="form-control" placeholder="輸入英文單字">
+        <br>
+        <input type="text" name="cnW" id="cnW" class="form-control" placeholder="輸入中文意思">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">單字類型:</label>
+      <select name='postcard_type' class="form-select">
+        <option value="nw">名詞</option>
+        <option value="vw">動詞</option>
+        <option value="adjw">形容詞</option>
+        <option value="advw">副詞</option>
+        <option value="prepw">介系詞</option>
+        <option value="conjw">連接詞</option>
+        <option value="intw">感嘆詞</option>
+      </select>
+    </div>
+
+
+    <button type="submit" class="btn btn-primary w-100">上傳</button>
+
+</form>
+    
+</html>
+
+<!--  註解  -->
