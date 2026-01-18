@@ -1,7 +1,7 @@
 #bs4爬蟲
 import requests
 from bs4 import BeautifulSoup
-import db
+import db.db as db
 
 cursor = db.mydb.cursor()
 
