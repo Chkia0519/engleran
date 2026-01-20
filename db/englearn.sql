@@ -29,12 +29,20 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `learnword` (
-  `en` text NOT NULL,
+  `en` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `cn` text NOT NULL,
   `typ` text NOT NULL,
-  `likeW` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `pracTimes` int(11) NOT NULL
+  `likeW` text CHARACTER SET utf8 COLLATE utf8_general_ci,
+  `pracTimes` int(11) NOT NULL,
+  `lotime` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 傾印資料表的資料 `learnword`
+--
+
+INSERT INTO `learnword` (`en`, `cn`, `typ`, `likeW`, `pracTimes`, `lotime`) VALUES
+('None', 'None', 'None', '0', 0, '2026-01-20');
 
 -- --------------------------------------------------------
 
@@ -75,6 +83,16 @@ CREATE TABLE `user` (
   `acc` text NOT NULL,
   `password` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 已傾印資料表的索引
+--
+
+--
+-- 資料表索引 `learnword`
+--
+ALTER TABLE `learnword`
+  ADD UNIQUE KEY `en` (`en`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

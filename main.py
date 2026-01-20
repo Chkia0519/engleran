@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify ,render_template
-from db import db
+from db import db,word_indb
 from datetime import datetime
 #import os
 
@@ -12,21 +12,24 @@ app = Flask(__name__)
 def index():
 
     learnW = request.form.get('lenW')
-    cnW = request.form.get('cnW')
-    word_type = request.form.get('word_type')
+    if word_indb(learnW):
+        return render_template('mylearnwords.html')
+    else:
+        cnW = request.form.get('cnW')
+        word_type = request.form.get('word_type')
 
-    today = datetime.today()
-    tdtime = today.strftime('%Y-%m-%d')
+        today = datetime.today()
+        tdtime = today.strftime('%Y-%m-%d')
 
-    print(learnW,cnW,word_type,tdtime)
-    
-    cursor = db.mydb.cursor()
-    sql = "insert into learnword(en,cn,typ,likeW,pracTimes,lotime) values('{}','{}','{}', 0 ,0,'{}')".format(learnW,cnW,word_type,tdtime)                   
-    cursor.execute(sql)
-    db.mydb.commit()
-    cursor.close()
+        print(learnW,cnW,word_type,tdtime)
+        
+        cursor = db.mydb.cursor()
+        sql = "insert into learnword(en,cn,typ,likeW,pracTimes,lotime) values('{}','{}','{}', 0 ,0,'{}')".format(learnW,cnW,word_type,tdtime)                   
+        cursor.execute(sql)
+        db.mydb.commit()
+        cursor.close()
 
-    return render_template('mylearnwords.html')
+        return render_template('mylearnwords.html')
 
 
 @app.route('/mywords',methods=['GET','POST'])
