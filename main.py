@@ -1,35 +1,45 @@
 from flask import Flask, request, jsonify ,render_template
 from db import db,word_indb
 from datetime import datetime
+from fire import eveW
+
 #import os
 
 app = Flask(__name__)
 
-
+@app.route('/')
+def index():
+    en,exps = eveW()
+    return render_template('index.html',en=en,exps=exps)
 
 #輸入單字卡
 @app.route('/mylearnwords',methods=['GET','POST'])
-def index():
+def mylearnwords():
 
     learnW = request.form.get('lenW')
-    if word_indb(learnW):
-        return render_template('mylearnwords.html')
+
+    if learnW and learnW.strip():  # 確保不是 None 或空字串
+
+        if word_indb(learnW):
+            tips = '這個單字已經存過囉!'
+            return render_template('mylearnwords.html', tips=tips)
+        else:
+            cnW = request.form.get('cnW')
+            word_type = request.form.get('word_type')
+
+            today = datetime.today()
+            tdtime = today.strftime('%Y-%m-%d')
+
+            cursor = db.mydb.cursor()
+            sql = "INSERT INTO learnword(en, cn, typ, likeW, pracTimes, lotime) VALUES (%s, %s, %s, 0, 0, %s)"
+            cursor.execute(sql, (learnW, cnW, word_type, tdtime))
+            db.mydb.commit()
+            cursor.close()
+
+            return render_template('mylearnwords.html')
     else:
-        cnW = request.form.get('cnW')
-        word_type = request.form.get('word_type')
-
-        today = datetime.today()
-        tdtime = today.strftime('%Y-%m-%d')
-
-        print(learnW,cnW,word_type,tdtime)
-        
-        cursor = db.mydb.cursor()
-        sql = "insert into learnword(en,cn,typ,likeW,pracTimes,lotime) values('{}','{}','{}', 0 ,0,'{}')".format(learnW,cnW,word_type,tdtime)                   
-        cursor.execute(sql)
-        db.mydb.commit()
-        cursor.close()
-
-        return render_template('mylearnwords.html')
+        tips = '請輸入單字！'
+        return render_template('mylearnwords.html', tips=tips)
 
 
 @app.route('/mywords',methods=['GET','POST'])
