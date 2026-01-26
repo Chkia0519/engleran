@@ -1,0 +1,51 @@
+header{
+    /* calc->計算函數(單位不同，不能計算) 數字和括號中間一定要空格 */
+    padding: calc( ( 70 / 2 - 10 ) * 1px ) 0;
+    /* 顯示方式：彈性容器 需要在父級元素才可使用 */
+    display: flex;
+    /* 水平對齊 均分 */
+    justify-content: space-between;
+    color: #ffffff ;
+    /* 背景顏色 */
+    background-color : rgb(153,56,37);
+}
+
+
+h1{
+    /* 寬度分為5等分 占1等分 */
+    width: calc( 100% / 5 );
+    background-color: rgb(255, 211, 180);
+    /* 文字對齊：置中 */
+    text-align: center;
+    /* 文字尺寸 */
+    font-size: 2rem;
+
+}
+
+#MainNav{
+    /* 寬度分為5等分 占1等分 */
+    width: calc(( 100% / 5 * 2 ) * 1%);
+    background-color: aquamarine;
+
+}
+
+#NavBut{
+    /* 顯示方式：彈性布局 */
+    display: flex;
+    /* 水平對齊：均分 */
+    justify-content: space-between;
+}
+
+#NavBut li{
+    /* 寬度 */
+    width: 40%;
+    background-color: violet;
+}
+
+#NavBut a{
+    /* 文字顏色 */
+    color: blue;
+    /* 文字尺寸 */
+    font-size: 1.3rem ;
+    text-decoration: none;
+}

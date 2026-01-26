@@ -2,20 +2,22 @@ from flask import Flask, request, jsonify ,render_template
 from db import db,word_indb
 from datetime import datetime
 from fire import eveW
+from getentocn import getentocn
 
 #import os
 
 app = Flask(__name__)
 
+#首頁
 @app.route('/')
 def index():
-    en,exps = eveW()
+    #每日一詞
+    en,exps = eveW() 
     return render_template('index.html',en=en,exps=exps)
 
 #輸入單字卡
 @app.route('/mylearnwords',methods=['GET','POST'])
 def mylearnwords():
-
     learnW = request.form.get('lenW')
 
     if learnW and learnW.strip():  # 確保不是 None 或空字串
@@ -24,6 +26,7 @@ def mylearnwords():
             tips = '這個單字已經存過囉!'
             return render_template('mylearnwords.html', tips=tips)
         else:
+            learnW = learnW.lower()
             cnW = request.form.get('cnW')
             word_type = request.form.get('word_type')
 
@@ -36,36 +39,25 @@ def mylearnwords():
             db.mydb.commit()
             cursor.close()
 
-            return render_template('mylearnwords.html')
+            return render_template('addwords.html',learnW=learnW,cnW=cnW)
     else:
         tips = '請輸入單字！'
         return render_template('mylearnwords.html', tips=tips)
 
-
-@app.route('/mywords',methods=['GET','POST'])
-def learnWord():
-    # 預設值，避免缺值或 UnboundLocalError
-    learnW = ""
-    cnW = ""
-    word_type = ""
-
-    if request.method == 'GET':
-        learnW = request.args.get('lenW')
-        cnW = request.args.get('cnW')
-        word_type = request.args.get('word_type')
-
+#中翻英
+@app.route('/entocn',methods=['GET','POST'])
+def etc():
+    enW = request.form.get('enW')
+    
+    if enW and enW.strip():  # 確保不是 None 或空字串
+        word = getentocn(enW)
+        print(word)
+        return render_template('entocn.html', word=word)
+    
     else:
-        data = request.get_json(silent=True)
-        learnW = (data.get('lenW') if data else request.form.get('lenW') or "").strip()
-        cnW = (data.get('cnW') if data else request.form.get('cnW') or "").strip()
-        word_type = (data.get('word_type') if data else request.form.get('word_type') or "").strip()
-
-    if not learnW:
-        # 後端回傳錯誤，前端可顯示「尚未輸入文字」
-        return jsonify({"error": "尚未輸入文字"}), 400
-
-    return jsonify({"lenW": learnW,'cnW':cnW,'word_type':word_type}), 200
-# ...existing code...    
+        tips = '請輸入單字！'
+        return render_template('entocn.html',tips=tips)
+    
 
 if __name__ == "__main__":
     app.run(debug=True)
