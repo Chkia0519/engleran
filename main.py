@@ -51,8 +51,8 @@ def etc():
     
     if enW and enW.strip():  # 確保不是 None 或空字串
         word = getentocn(enW)
-        print(word)
-        return render_template('entocn.html', word=word)
+        print(word,enW)
+        return render_template('entocn.html', word=word ,enW=enW)
     
     else:
         tips = '請輸入單字！'

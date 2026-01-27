@@ -10,7 +10,7 @@ def getentocn(word):
         'cookie':'ApplicationGatewayAffinityCORS=48282c56c1ae4f832cf8984ca6ed81e0; ApplicationGatewayAffinity=48282c56c1ae4f832cf8984ca6ed81e0; _ga=GA1.3.894321893.1768134822; _gid=GA1.3.1608134897.1768134822; _ga_E18C7TBS4E=GS2.3.s1768134822$o1$g1$t1768135763$j54$l0$h0'                          
     }
 
-    #word = 'egg' #input('請輸入英文：')
+    #word = 'way' #input('請輸入英文：')
     url += word
     print(url)
     urls = requests.get(url,headers=header)
@@ -18,14 +18,13 @@ def getentocn(word):
     urls=urls.text
 
     soup = BeautifulSoup(urls,'html.parser')
-    print(soup)
+    #print(soup)
     cl = soup.find(class_='content-data')
     p=cl.find('p')
-    text = p.get_text(separator="\n",strip=True)
+    if p :
+        text = p.get_text(separator="\n",strip=True)
+        return(text)
+    else:
+        return('找不到相關資料')
 
-    return text if text else "查無結果"
 
-
-
-# text = getentocn('sop')
-# print(text)

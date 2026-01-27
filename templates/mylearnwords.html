@@ -4,38 +4,50 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!--device-width 自適應-->
   <title>單字本</title>
-  <h1>HELLO 歡迎來到單字本</h1>
-  <h3>輸入正在學習的單字，讓我們來多加練習吧！</h3>
-  <h3> {{tips}} </h3>
   <link rel="stylesheet" href='/static/css/style2.css'>
 </head>
 
-<form action="/mylearnwords" method="POST" enctype="multipart/form-data">
-    <div>
-        <input type="text" name="lenW" id="lenW" class="form-control" pattern="[A-Za-z]+"  placeholder="輸入英文單字">
-        <br>
-        <input type="text" name="cnW" id="cnW" class="form-control" pattern="[\u4e00-\u9fff]+" placeholder="輸入中文意思">
-    </div>
+<body>
+  <header> 
+        <h1>單字本</h1> 
+        <!-- 導覽列 -->
+        <nav id = 'MainNav'>
+            <ul id="NavBut">
+                <li class="lenwords"><a href="/mylearnwords">單字本</a></li>
+                <li class="findw" ><a href="/entocn">英翻中</a></li>
+                <li class="read" ><a href="/read">學習頁面</a></li>
+            </ul>
+        </nav> 
+        
+    </header>
+      <h3>輸入正在學習的單字，讓我們來多加練習吧！</h3>
+      <h3> {{tips}} </h3>
+  <form action="/mylearnwords" method="POST" enctype="multipart/form-data">
+      <div>
+          <input type="text" name="lenW" id="lenW" class="form-control" pattern="[A-Za-z]+"  placeholder="輸入英文單字">
+          <br>
+          <input type="text" name="cnW" id="cnW" class="form-control" pattern="[\u4e00-\u9fff]+" placeholder="輸入中文意思">
+      </div>
 
-    <div class="mb-3">
-      <label class="form-label">單字類型:</label>
-      <select name='word_type' class="form-select">
-        <option value="名詞">名詞</option>
-        <option value="動詞">動詞</option>
-        <option value="形容詞">形容詞</option>
-        <option value="副詞">副詞</option>
-        <option value="介系詞">介系詞</option>
-        <option value="連接詞">連接詞</option>
-        <option value="感嘆詞">感嘆詞</option>
-      </select>
-    </div>
+      <div class="mb-3">
+        <label class="form-label">單字類型:</label>
+        <select name='word_type' class="form-select">
+          <option value="名詞">名詞</option>
+          <option value="動詞">動詞</option>
+          <option value="形容詞">形容詞</option>
+          <option value="副詞">副詞</option>
+          <option value="介系詞">介系詞</option>
+          <option value="連接詞">連接詞</option>
+          <option value="感嘆詞">感嘆詞</option>
+        </select>
+      </div>
 
 
-    <button type="submit" class="btn btn-primary w-100">上傳</button>
+      <button type="submit">上傳</button>
 
-</form>
-    
-</html>
+  </form>
+</body>    
+
 
 <!-- 頁尾宣告 -->
 <footer> 
@@ -45,4 +57,5 @@
   </ul>
 </footer>
 
+</html>
 <!--  註解  -->
