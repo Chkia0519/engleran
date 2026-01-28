@@ -1,17 +1,14 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="index" content="width=device-width, initial-scale=1.0"> <!--device-width 自適應-->
-    <title>首頁</title>
-    <link rel="stylesheet" href='static/css/style2.css'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>英翻中</title>
 </head>
-
 <body>
     <header> 
         <!-- Logo的H1只能夠有1個 -->
-        <h1>首頁</h1> 
+        <h1>英翻中</h1> 
         
         <!-- 導覽列 -->
         <nav id = 'MainNav'>
@@ -21,23 +18,31 @@
                 <li class="read" ><a href="/read">學習頁面</a></li>
             </ul>
         </nav> 
-    </header>   
+    </header>  
 
+    <h3>{{tips}}</h3>
+    <form action="/entocn" method="POST">
+
+        <div>
+            <input type="text" name="enW" id="enW" class="form-control" pattern="[A-Za-z]+"  placeholder="輸入英文單字">
+        </div>
+
+        <button type="submit">翻譯</button>
+
+    </form> 
     <main>
         <!-- <img src="/static/image/pikmin.png"> -->
-        <h3>每日一詞</h3>
-        <ul>{{en}}</ul>
-        <br>
-        {{exps}}
+        <h3>{{enW}}</h3>
+        <p style="white-space: pre-line;">{{ word }}</p>
     </main>
     
-
 </body>
 
-<!-- 頁尾宣告 -->
+
 <footer> 
   <ul>
     <li>2025 - <span>2026</span> Chkia © 著作權所有，並保留一切權利。</li>
+
   </ul>
 </footer>
 
