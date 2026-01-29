@@ -34,7 +34,7 @@ def mylearnwords():
             tdtime = today.strftime('%Y-%m-%d')
 
             cursor = db.mydb.cursor()
-            sql = "INSERT INTO learnword(en, cn, typ, likeW, pracTimes, lotime) VALUES (%s, %s, %s, 0, 0, %s)"
+            sql = "INSERT INTO learnword(en, cn, typ, likeW, pracTimes, correctTimes, lotime) VALUES (%s, %s, %s, 0, 0, 0, %s)"
             cursor.execute(sql, (learnW, cnW, word_type, tdtime))
             db.mydb.commit()
             cursor.close()
@@ -58,6 +58,10 @@ def etc():
         tips = '請輸入單字！'
         return render_template('entocn.html',tips=tips)
     
+@app.route('/read',methods=['GET','POST'])
+def readword():
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)

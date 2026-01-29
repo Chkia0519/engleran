@@ -1,4 +1,6 @@
 #用於檢查單字是否已存在於單字本內
+from db import db
+
 def word_indb(word):
     cursor = db.mydb.cursor()
     sql = "SELECT COUNT(*) FROM learnword WHERE en = %s"

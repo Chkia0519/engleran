@@ -34,6 +34,7 @@ CREATE TABLE `learnword` (
   `typ` text NOT NULL,
   `likeW` text CHARACTER SET utf8 COLLATE utf8_general_ci,
   `pracTimes` int(11) NOT NULL,
+  `correctTimes` int(11) NOT NULL,
   `lotime` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -41,8 +42,8 @@ CREATE TABLE `learnword` (
 -- 傾印資料表的資料 `learnword`
 --
 
-INSERT INTO `learnword` (`en`, `cn`, `typ`, `likeW`, `pracTimes`, `lotime`) VALUES
-('None', 'None', 'None', '0', 0, '2026-01-20');
+INSERT INTO `learnword` (`en`, `cn`, `typ`, `likeW`, `pracTimes`,'correctTimes', `lotime`) VALUES
+('None', 'None', 'None', '0', 0, 0,'2026-01-20');
 
 -- --------------------------------------------------------
 

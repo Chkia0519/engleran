@@ -14,7 +14,7 @@ def loadwd():
 # for en, cn ,typ in loadwd():
 #     print(en, cn, typ)
 
-#隨機挑字卡
+#隨機挑數個字卡
 def random_words(n=5):
     cursor = db.mydb.cursor()
     cursor.execute("SELECT en, cn ,typ FROM learnword")
@@ -27,27 +27,77 @@ def random_words(n=5):
 #     print(en, cn, typ)
 
 
-import pymysql
-import random
-
-db = pymysql.connect(
-    host="localhost",
-    user="root",
-    password="your_password",
-    database="your_db",
-    charset="utf8mb4"
-)
-
+#隨機挑1個字卡及顯示他的練習次數 直接從SQL裡面下RAND會比較快(原本是用先全抓下來再random.choice)
 def get_random_word():
-    cursor = db.cursor()
-    cursor.execute("SELECT id, en, cn, pracTimes FROM learnword")
-    rows = cursor.fetchall()
+    cursor = db.mydb.cursor()
+    cursor.execute("""
+            SELECT en, cn, pracTimes, correctTimes
+            FROM learnword
+            ORDER BY RAND()
+            LIMIT 1
+             """)
+    word = cursor.fetchone()
     cursor.close()
-    return random.choice(rows)
+    return word
 
-def update_prac_times(word_id):
-    cursor = db.cursor()
-    cursor.execute("UPDATE learnword SET pracTimes = pracTimes + 1 WHERE id = %s", (word_id,))
-    db.commit()
+#use eg.
+# en, cn, pts, cts = get_random_word()
+# print(en, cn, pts, cts)
+
+
+#更新練習次數並顯示已經練習幾次
+def update_prac_times(enword):
+    cursor = db.mydb.cursor()
+    cursor.execute("UPDATE learnword SET pracTimes = pracTimes + 1 WHERE en = %s", (enword,))
+    db.mydb.commit()
+
+    cursor.execute("SELECT pracTimes FROM learnword WHERE en = %s", (enword,))
+    tims = cursor.fetchone()[0]  # 取出第一列的第一個欄位值
+
     cursor.close()
 
+    return(tims)
+
+#use eg.
+# tims = update_prac_times('none')
+# print(tims)
+
+
+#答案正確就正確+1
+def update_correct_times(enword):
+    cursor = db.mydb.cursor()
+    cursor.execute("UPDATE learnword SET correctTimes = correctTimes + 1 WHERE en = %s",(enword,))
+    db.mydb.commit()
+    cursor.close()
+
+
+#整合抽字卡和更新次數 -還沒改好-
+def practice_word(en, cn, ans):
+    # #使用get_random_word()來抽一張字卡
+    # en, cn, pts, cts = get_random_word()
+
+    # print("請輸入英文單字：")
+    # print(f"中文：{cn}")
+
+    #只要有練習就在練習次數+1
+    prac_add = update_prac_times(en)
+
+    #答案正確就在正確+1
+    correct = ans.strip().lower() == en.strip().lower() #大小寫跟空白忽略
+
+    if correct:
+        update_correct_times(en)
+        print('恭喜答對!')
+    else:
+        print(f'正確答案是：{en}')
+
+    print(f"這個單字已練習 {prac_add} 次")
+
+    return(en,cn,ans,correct)
+
+
+en, cn, _, _ = get_random_word()
+print(f"中文：{cn}")
+answer = input("請輸入英文單字：")
+
+practice_word(en, cn, answer)
