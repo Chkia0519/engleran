@@ -1,13 +1,10 @@
-from flask import Flask, request, session ,render_template
+from flask import Flask, request, session , render_template, redirect, url_for
 from db import db,word_indb
 from datetime import datetime
 from fire import eveW
 from getentocn import getentocn
 from read import *
-<<<<<<< HEAD
-=======
 
->>>>>>> c69262c4cae4eeceecd4cd627fa61ba9816fce5c
 #import os
 
 app = Flask(__name__)
@@ -66,34 +63,6 @@ def etc():
         tips = '請輸入單字！'
         return render_template('entocn.html',tips=tips)
     
-<<<<<<< HEAD
-#還沒好
-@app.route('/read',methods=['GET','POST'])
-def readword():
-    #第一次get
-    if request.method == 'GET':
-        en, cn, _, _ = get_random_word()
-        return render_template(
-            "addwords.html",
-            learnW=en,
-            cnW=cn,
-            correct=None
-        )
-    #使用者post
-    ans = request.form.get('Ans')
-    en = request.form.get('en')
-    cn = request.form.get('cn')
-
-    result = practice_word(en, cn, ans)
-
-    return render_template(
-        "addwords.html",
-        learnW=result["en"],
-        cnW=result["cn"],
-        correct=result["correct"],
-        pracTimes=result["pracTimes"]
-    )
-=======
 #抽字卡練習
 @app.route('/read', methods=['GET', 'POST'])
 def readword():
@@ -120,7 +89,6 @@ def readword():
     cn = request.form.get('cn')
 
     result = practice_word(en, cn, ans)
->>>>>>> c69262c4cae4eeceecd4cd627fa61ba9816fce5c
 
     #使用 session 紀錄狀態 
     session['total'] += 1
@@ -158,18 +126,34 @@ def end_practice():
     )
 
 #顯示全部資料
-@app.route('/all_words')
-def all_words():
-    total = session.get('total', 0)
-    correct = session.get('correct', 0)
-    #正確率
-    accuracy = round((correct / total) * 100, 2) if total > 0 else 0
+@app.route('/allwords',methods=['GET','POST'])
+def allwords():
+    rows = loadwd()
 
     return render_template(
         "allwords.html",
-        total=total,
-        correct=correct,
-        accuracy=accuracy
+        words=rows
     )
+
+#刪除單字
+@app.route('/delete_word/<string:en>', methods=['POST'])
+def delete_word(en):
+    cursor = db.mydb.cursor()
+    cursor.execute("DELETE FROM learnword WHERE en = %s", (en,))
+    db.mydb.commit()
+    cursor.close()
+    return redirect(url_for('allwords'))
+
+#單個單字新增筆記   暫時還沒做
+@app.route('/add_note/<string:en>', methods=['POST'])
+def add_note(en):
+    note = request.form['note']   # 從表單取得筆記
+    cursor = db.mydb.cursor()
+    cursor.execute("UPDATE learnword SET note = %s WHERE en = %s", (note, en))
+    db.mydb.commit()
+    cursor.close()
+    return redirect(url_for('allwords'))
+
+
 if __name__ == "__main__":
     app.run(debug=True)

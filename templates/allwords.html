@@ -1,2 +1,73 @@
-{{learnW}}
-{{cnW}}
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="index" content="width=device-width, initial-scale=1.0"> <!--device-width 自適應-->
+    <title>首頁</title>
+    <link rel="stylesheet" href='static/css/style.css'>
+</head>
+
+<body>
+    <header> 
+        <!-- Logo的H1只能夠有1個 -->
+        <h1>我的單字本</h1> 
+        
+        <!-- 導覽列 -->
+        <nav id = 'MainNav'>
+            <ul id="NavBut">
+                <li class="index"><a href="/">首頁</a></li>
+                <li class="lenwords"><a href="/mylearnwords">輸入單字</a></li>
+                <li class="findw" ><a href="/entocn">英翻中</a></li>
+                <li class="read" ><a href="/read">練習頁</a></li>
+                <li class="allwords" ><a href="/allwords">我的單字本</a></li>
+            </ul>
+        </nav> 
+    </header>
+
+    <table>
+    <tr>
+        <th>英文</th>
+        <th>中文</th>
+        <th>類型</th>
+        <th>練習次數</th>
+        <th>正確次數</th>
+        <th>新增時間</th>
+        <th>功能</th>
+    </tr>
+    {% for en, cn, typ, pts, cts, tim, note in words %}
+    <tr>
+        <td>{{ en }}</td>
+        <td>{{ cn }}</td>
+        <td>{{ typ }}</td>
+        <td>{{ pts }}</td>
+        <td>{{ cts }}</td>
+        <td>{{ tim }}</td>
+        <td>
+            <form action="{{ url_for('delete_word', en=en) }}" method="post">
+                <button type="submit">刪除</button>
+            </form>
+
+        
+            <!-- <form action="{{ url_for('add_note', en=en) }}" method="post" style="display:inline;">
+                <input type="text" name="note" placeholder="輸入筆記">
+                <button type="submit">更新筆記</button>
+                <button type="submit">刪除筆記</button>
+            </form> -->
+
+        </td>
+
+    </tr>
+    {% endfor %}
+    </table>
+
+</body>
+
+<!-- 頁尾宣告 -->
+<footer> 
+  <ul>
+    <li>2025 - <span>2026</span> Chkia © 著作權所有，並保留一切權利。</li>
+  </ul>
+</footer>
+
+</html>

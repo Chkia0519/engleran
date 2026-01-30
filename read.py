@@ -4,7 +4,7 @@ import random
 #顯示全部字卡
 def loadwd():
     cursor = db.mydb.cursor()
-    cursor.execute("SELECT en, cn ,typ ,pracTimes ,correctTimes ,lotime FROM learnword")
+    cursor.execute("SELECT en, cn ,typ ,pracTimes ,correctTimes ,lotime ,note FROM learnword")
     rows = cursor.fetchall()
     cursor.close()
 
@@ -86,17 +86,12 @@ def get_correct_times(enword):
 
 #整合抽字卡和更新次數 -還沒改好-
 def practice_word(en, cn, ans):
-<<<<<<< HEAD
-    # #使用get_random_word()來抽一張字卡
-    # en, cn, pts, cts = get_random_word() 放裡面會再次重抽 邏輯錯誤
-=======
     
     # 使用get_random_word()來抽一張字卡 會重複抽導致答案和題目錯亂，寫在函式外會更好
     # en, cn, pts, cts = get_random_word()
 
     # print("請輸入英文單字：")
     # print(f"中文：{cn}")
->>>>>>> c69262c4cae4eeceecd4cd627fa61ba9816fce5c
 
     #只要有練習就在練習次數+1
     prac_add = update_prac_times(en)
@@ -106,25 +101,12 @@ def practice_word(en, cn, ans):
     correct = ans.strip().lower() == en.strip().lower() #大小寫跟空白忽略
 
     if correct:
-<<<<<<< HEAD
-        update_correct_times(en)
-        #print('恭喜答對!')
-=======
         now_cts = update_correct_times(en) #now_cts->抓取最新的正確次數
         print('恭喜答對!')
-    else:
-        now_cts = update_correct_times(en) #now_cts->抓取最新的正確次數
->>>>>>> c69262c4cae4eeceecd4cd627fa61ba9816fce5c
+    
+    print(f"這個單字已練習 {prac_add} 次")
 
-    # else:
-        #print(f'正確答案是：{en}')
-
-<<<<<<< HEAD
-    #print(f"這個單字已練習 {prac_add} 次")
-
-=======
     #改字典比較好維護
->>>>>>> c69262c4cae4eeceecd4cd627fa61ba9816fce5c
     return {
         "en": en,
         "cn": cn,

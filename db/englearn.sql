@@ -11,6 +11,7 @@ CREATE TABLE `learnword` (
   `pracTimes` int(11) NOT NULL,
   `correctTimes` int(11) NOT NULL,
   `lotime` DATETIME NOT NULL,
+  `note` text NOT NULL,
   UNIQUE KEY `en` (`en`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

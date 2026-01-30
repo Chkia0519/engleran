@@ -3,21 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>學習頁面</title>
+    <title>練習頁</title>
+    <link rel="stylesheet" href='static/css/style.css'>
 </head>
 <body>
     <header> 
         <!-- Logo的H1只能夠有1個 -->
-        <h1>學習頁面</h1> 
+        <h1>練習頁</h1> 
         
         <!-- 導覽列 -->
         <nav id = 'MainNav'>
             <ul id="NavBut">
                 <li class="index"><a href="/">首頁</a></li>
-                <li class="lenwords"><a href="/mylearnwords">單字本</a></li>
+                <li class="lenwords"><a href="/mylearnwords">輸入單字</a></li>
                 <li class="findw" ><a href="/entocn">英翻中</a></li>
-                <li class="read" ><a href="/read">學習頁面</a></li>
-            </ul>
+                <li class="read" ><a href="/read">練習頁</a></li>
+                <li class="allwords" ><a href="/allwords">我的單字本</a></li>            </ul>
         </nav> 
     </header>  
     
@@ -32,11 +33,6 @@
         {% endif %}
     {% endif %}
 
-<<<<<<< HEAD
-    <h3>{{tips}}</h3>
-
-   <form action="/read" method="POST">
-=======
     <hr>
     <p>本次練習：</p>
     <p>題數：{{ total }}</p>
@@ -44,7 +40,6 @@
 
     <!-- 顯示背單字的字卡 -->
     <form action="/read" method="POST">
->>>>>>> c69262c4cae4eeceecd4cd627fa61ba9816fce5c
         <p>中文：{{ cnW }}</p>
 
         <input type="hidden" name="en" value="{{ learnW }}">
@@ -53,30 +48,12 @@
         <input type="text" name="Ans" pattern="[A-Za-z]+" placeholder="輸入英文單字">
         <button type="submit">送出</button>
     </form>
-<<<<<<< HEAD
-
-    {% if correct is not none %}
-        {% if correct %}
-            <p style="color:green;">✅ 答對了！</p>
-        {% else %}
-            <p style="color:red;">❌ 答錯，正確答案是 {{ learnW }}</p>
-        {% endif %}
-        <p>已練習 {{ pracTimes }} 次</p>
-    {% endif %}
-
-    <main>
-        <!-- <img src="/static/image/pikmin.png"> -->
-        <h3>{{enW}}</h3>
-        <p style="white-space: pre-line;">{{ word }}</p>
-    </main>
-=======
     
     <form action="/end_practice" method="GET">
         <button type="submit" style="background:red;color:white;">
             結束練習
         </button>
     </form>
->>>>>>> c69262c4cae4eeceecd4cd627fa61ba9816fce5c
     
 </body>
 
