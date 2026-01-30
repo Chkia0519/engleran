@@ -74,10 +74,7 @@ def update_correct_times(enword):
 #整合抽字卡和更新次數 -還沒改好-
 def practice_word(en, cn, ans):
     # #使用get_random_word()來抽一張字卡
-    # en, cn, pts, cts = get_random_word()
-
-    # print("請輸入英文單字：")
-    # print(f"中文：{cn}")
+    # en, cn, pts, cts = get_random_word() 放裡面會再次重抽 邏輯錯誤
 
     #只要有練習就在練習次數+1
     prac_add = update_prac_times(en)
@@ -87,13 +84,20 @@ def practice_word(en, cn, ans):
 
     if correct:
         update_correct_times(en)
-        print('恭喜答對!')
-    else:
-        print(f'正確答案是：{en}')
+        #print('恭喜答對!')
 
-    print(f"這個單字已練習 {prac_add} 次")
+    # else:
+        #print(f'正確答案是：{en}')
 
-    return(en,cn,ans,correct)
+    #print(f"這個單字已練習 {prac_add} 次")
+
+    return {
+        "en": en,
+        "cn": cn,
+        "answer": ans,
+        "correct": correct,
+        "pracTimes": prac_add
+    }
 
 
 en, cn, _, _ = get_random_word()

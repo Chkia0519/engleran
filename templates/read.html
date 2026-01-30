@@ -21,15 +21,26 @@
     </header>  
 
     <h3>{{tips}}</h3>
-    <form action="/entocn" method="POST">
 
-        <div>
-            <input type="text" name="Ans" id="Ans" pattern="[A-Za-z]+"  placeholder="輸入英文單字">
-        </div>
+   <form action="/read" method="POST">
+        <p>中文：{{ cnW }}</p>
 
+        <input type="hidden" name="en" value="{{ learnW }}">
+        <input type="hidden" name="cn" value="{{ cnW }}">
+
+        <input type="text" name="Ans" pattern="[A-Za-z]+" placeholder="輸入英文單字">
         <button type="submit">送出</button>
+    </form>
 
-    </form> 
+    {% if correct is not none %}
+        {% if correct %}
+            <p style="color:green;">✅ 答對了！</p>
+        {% else %}
+            <p style="color:red;">❌ 答錯，正確答案是 {{ learnW }}</p>
+        {% endif %}
+        <p>已練習 {{ pracTimes }} 次</p>
+    {% endif %}
+
     <main>
         <!-- <img src="/static/image/pikmin.png"> -->
         <h3>{{enW}}</h3>

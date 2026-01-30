@@ -3,7 +3,7 @@ from db import db,word_indb
 from datetime import datetime
 from fire import eveW
 from getentocn import getentocn
-
+from read import *
 #import os
 
 app = Flask(__name__)
@@ -58,10 +58,32 @@ def etc():
         tips = '請輸入單字！'
         return render_template('entocn.html',tips=tips)
     
+#還沒好
 @app.route('/read',methods=['GET','POST'])
 def readword():
+    #第一次get
+    if request.method == 'GET':
+        en, cn, _, _ = get_random_word()
+        return render_template(
+            "addwords.html",
+            learnW=en,
+            cnW=cn,
+            correct=None
+        )
+    #使用者post
+    ans = request.form.get('Ans')
+    en = request.form.get('en')
+    cn = request.form.get('cn')
 
+    result = practice_word(en, cn, ans)
 
+    return render_template(
+        "addwords.html",
+        learnW=result["en"],
+        cnW=result["cn"],
+        correct=result["correct"],
+        pracTimes=result["pracTimes"]
+    )
 
 if __name__ == "__main__":
     app.run(debug=True)
