@@ -1,43 +1,42 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="index" content="width=device-width, initial-scale=1.0"> <!--device-width 自適應-->
-    <title>首頁</title>
-    <!-- <link rel="stylesheet" href='static/css/style2.css'> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>學習頁面</title>
 </head>
-
 <body>
     <header> 
         <!-- Logo的H1只能夠有1個 -->
-        <h1>首頁</h1> 
+        <h1>結束測驗</h1> 
         
         <!-- 導覽列 -->
         <nav id = 'MainNav'>
             <ul id="NavBut">
+                <li class="index"><a href="/">首頁</a></li>
                 <li class="lenwords"><a href="/mylearnwords">單字本</a></li>
                 <li class="findw" ><a href="/entocn">英翻中</a></li>
                 <li class="read" ><a href="/read">學習頁面</a></li>
             </ul>
         </nav> 
-    </header>   
+    </header>  
+  
+    <h2>本次練習結果</h2>
 
-    <main>
-        <!-- <img src="/static/image/pikmin.png"> -->
-        <h3>每日一詞</h3>
-        <ul>{{en}}</ul>
-        <br>
-        {{exps}}
-    </main>
+    <p>總題數：{{ total }}</p>
+    <p>答對題數：{{ correct }}</p>
+    <p>正確率：{{ accuracy }}%</p>
+
+    <a href="/read">再練一次</a>
+    </form>
     
-
 </body>
 
-<!-- 頁尾宣告 -->
+
 <footer> 
   <ul>
     <li>2025 - <span>2026</span> Chkia © 著作權所有，並保留一切權利。</li>
+
   </ul>
 </footer>
 
