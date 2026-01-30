@@ -13,28 +13,46 @@
         <!-- 導覽列 -->
         <nav id = 'MainNav'>
             <ul id="NavBut">
+                <li class="index"><a href="/">首頁</a></li>
                 <li class="lenwords"><a href="/mylearnwords">單字本</a></li>
                 <li class="findw" ><a href="/entocn">英翻中</a></li>
                 <li class="read" ><a href="/read">學習頁面</a></li>
             </ul>
         </nav> 
     </header>  
+    
+    <!-- 顯示上次的結果 -->
+    {% if show %}
+        {% if last_correct is not none %}
+            {% if last_correct %}
+                <p style="color:green;">上一題答對</p>
+            {% else %}
+                <p style="color:red;">上一題答錯，正確是 {{ last_answer }}</p>
+            {% endif %}
+        {% endif %}
+    {% endif %}
 
-    <h3>{{tips}}</h3>
-    <form action="/entocn" method="POST">
+    <hr>
+    <p>本次練習：</p>
+    <p>題數：{{ total }}</p>
+    <p>答對：{{ correct }}</p>
 
-        <div>
-            <input type="text" name="Ans" id="Ans" pattern="[A-Za-z]+"  placeholder="輸入英文單字">
-        </div>
+    <!-- 顯示背單字的字卡 -->
+    <form action="/read" method="POST">
+        <p>中文：{{ cnW }}</p>
 
+        <input type="hidden" name="en" value="{{ learnW }}">
+        <input type="hidden" name="cn" value="{{ cnW }}">
+
+        <input type="text" name="Ans" pattern="[A-Za-z]+" placeholder="輸入英文單字">
         <button type="submit">送出</button>
-
-    </form> 
-    <main>
-        <!-- <img src="/static/image/pikmin.png"> -->
-        <h3>{{enW}}</h3>
-        <p style="white-space: pre-line;">{{ word }}</p>
-    </main>
+    </form>
+    
+    <form action="/end_practice" method="GET">
+        <button type="submit" style="background:red;color:white;">
+            結束練習
+        </button>
+    </form>
     
 </body>
 
