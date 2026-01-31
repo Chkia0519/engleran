@@ -19,8 +19,8 @@ def eveW():
 
     en = soup.find('h5').text #英文
 
-    exps = soup.find(class_='content-data').text
-    exps = exps.replace(en,'')
+    exps = soup.find(class_='content-data').get_text(separator="\n",strip=True)
+    #exps = exps.replace(en,'')
 
     return(en,exps)
 

@@ -1,8 +1,0 @@
-/*
-    串接所有樣式表
-    高度一般都用百分比高不用固定高(px)
-*/
-@import url('reset.css');
-@import url('header.css');
-@import url('imagesize.css');
-@import url('footer.css');

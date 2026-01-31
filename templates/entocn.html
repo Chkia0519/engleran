@@ -23,18 +23,15 @@
         </nav> 
     </header>  
 
-    <h3>{{tips}}</h3>
-    <form action="/entocn" method="POST">
-
-        <div>
-            <input type="text" name="enW" id="enW" pattern="[A-Za-z]+"  placeholder="輸入英文單字">
-        </div>
-
-        <button type="submit">翻譯</button>
-
-    </form> 
+    
     <main>
-        <!-- <img src="/static/image/pikmin.png"> -->
+        <h3>{{tips}}</h3>
+        <form action="/entocn" method="POST">
+            <div>
+                <input type="text" name="enW" id="enW" pattern="[A-Za-z]+"  placeholder="輸入英文單字">
+            </div>
+            <button type="submit">翻譯</button>
+        </form> 
         <h3>{{enW}}</h3>
         <p style="white-space: pre-line;">{{ word }}</p>
     </main>
