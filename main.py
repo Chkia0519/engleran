@@ -1,28 +1,159 @@
-from flask import Flask, request, jsonify ,render_template
-#import db
+from flask import Flask, request, session , render_template, redirect, url_for
+from db import db,word_indb
+from datetime import datetime
+from fire import eveW
+from getentocn import getentocn
+from read import *
+
+#import os
 
 app = Flask(__name__)
+app.secret_key = "learn-secret-key" 
+
+#首頁
+@app.route('/')
+def index():
+    #每日一詞
+    en,exps = eveW() 
+    return render_template('index.html',en=en,exps=exps)
 
 #輸入單字卡
-@app.route('/mylearnwords',methods=["GET"])
-def index():
-    return render_template('mylearnwords.html')
+@app.route('/mylearnwords',methods=['GET','POST'])
+def mylearnwords():
+    learnW = request.form.get('lenW')
 
+    if learnW and learnW.strip():  # 確保不是 None 或空字串
 
-@app.route('/mywords',methods=['GET','POST'])
-def learnWord():
-    if request.method == 'GET':
-        learnW = request.args.get('lenW')
+        if word_indb(learnW):
+            tips = '這個單字已經存過囉!'
+            return render_template('mylearnwords.html', tips=tips)
+        else:
+            learnW = learnW.lower()
+            cnW = request.form.get('cnW')
+            word_type = request.form.get('word_type')
+
+            tips = (f'很棒!學習了一個新的單字! {learnW},{cnW}')
+
+            today = datetime.today()
+            tdtime = today.strftime('%Y-%m-%d')
+
+            cursor = db.mydb.cursor()
+            sql = "INSERT INTO learnword(en, cn, typ, likeW, pracTimes, correctTimes, lotime) VALUES (%s, %s, %s, 0, 0, 0, %s)"
+            cursor.execute(sql, (learnW, cnW, word_type, tdtime))
+            db.mydb.commit()
+            cursor.close()
+
+            return render_template('mylearnwords.html',tips=tips)
     else:
-        data = request.get_json(silent=True)
-        learnW = (data.get('lenW') if data else request.form.get('lenW') or "").strip()
+        tips = '請輸入單字！'
+        return render_template('mylearnwords.html', tips=tips)
 
-    if not learnW:
-        # 後端回傳錯誤，前端可顯示「尚未輸入文字」
-        return jsonify({"error": "尚未輸入文字"}), 400
+#英翻中
+@app.route('/entocn',methods=['GET','POST'])
+def etc():
+    enW = request.form.get('enW')
+    
+    if enW and enW.strip():  # 確保不是 None 或空字串
+        word = getentocn(enW)
+        
+        print(word,enW)
+        return render_template('entocn.html', word=word ,enW=enW)
+    
+    else:
+        tips = '請輸入單字！'
+        return render_template('entocn.html',tips=tips)
+    
+#抽字卡練習
+@app.route('/read', methods=['GET', 'POST'])
+def readword():
+    #第一次進去是GET
+    if request.method == 'GET':
+        session['total'] = 0
+        session['correct'] = 0
 
-    return jsonify({"lenW": learnW}), 200
-# ...existing code...    
+        en, cn, _, _ = get_random_word()
+        return render_template(
+            "read.html",
+            learnW=en,
+            cnW=cn,
+            last_correct=None,
+            last_answer=None,
+            total=session['total'],
+            correct=session['correct'],
+            show=False #不顯示答題正確及錯誤
+        )
+    
+    #使用者輸入答案
+    ans = request.form.get('Ans')
+    en = request.form.get('en')
+    cn = request.form.get('cn')
+
+    result = practice_word(en, cn, ans)
+
+    #使用 session 紀錄狀態 
+    session['total'] += 1
+    if result["correct"]:
+        session['correct'] += 1
+
+    # 如要繼續就抽下一題
+    next_en, next_cn, _, _ = get_random_word()
+
+    return render_template(
+        "read.html",
+        learnW=next_en,
+        cnW=next_cn,
+        last_correct=result["correct"],
+        last_answer=result["en"],
+        pracTimes=result["pracTimes"],
+        total=session['total'],
+        correct=session['correct'],
+        show=True
+    )
+
+#結束練習
+@app.route('/end_practice')
+def end_practice():
+    total = session.get('total', 0)
+    correct = session.get('correct', 0)
+    #正確率
+    accuracy = round((correct / total) * 100, 2) if total > 0 else 0
+
+    return render_template(
+        "result.html",
+        total=total,
+        correct=correct,
+        accuracy=accuracy
+    )
+
+#顯示全部資料
+@app.route('/allwords',methods=['GET','POST'])
+def allwords():
+    rows = loadwd()
+
+    return render_template(
+        "allwords.html",
+        words=rows
+    )
+
+#刪除單字
+@app.route('/delete_word/<string:en>', methods=['POST'])
+def delete_word(en):
+    cursor = db.mydb.cursor()
+    cursor.execute("DELETE FROM learnword WHERE en = %s", (en,))
+    db.mydb.commit()
+    cursor.close()
+    return redirect(url_for('allwords'))
+
+#單個單字新增筆記   暫時還沒做
+@app.route('/add_note/<string:en>', methods=['POST'])
+def add_note(en):
+    note = request.form['note']   # 從表單取得筆記
+    cursor = db.mydb.cursor()
+    cursor.execute("UPDATE learnword SET note = %s WHERE en = %s", (note, en))
+    db.mydb.commit()
+    cursor.close()
+    return redirect(url_for('allwords'))
+
 
 if __name__ == "__main__":
     app.run(debug=True)
